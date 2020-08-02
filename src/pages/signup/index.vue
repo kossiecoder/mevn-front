@@ -3,7 +3,7 @@
         <b-form @submit.prevent="onSubmit">
             <ValidationProvider
                 name="Name"
-                rules="email"
+                rules="required"
                 v-slot="{ errors }"
             >
                 <b-form-group label="Name:">
@@ -12,33 +12,54 @@
                         type="text"
                         required
                     ></b-form-input>
+                    <FormErrorMessage :errors="errors"/>
                 </b-form-group>
-                <span>{{ errors[0] }}</span>
             </ValidationProvider>
 
-            <b-form-group label="Email address:">
-                <b-form-input
-                    v-model="form.email"
-                    type="email"
-                    required
-                ></b-form-input>
-            </b-form-group>
+            <ValidationProvider
+                name="Email"
+                rules="required|email"
+                v-slot="{ errors }"
+            >
+                <b-form-group label="Email address:">
+                    <b-form-input
+                        v-model="form.email"
+                        type="email"
+                        required
+                    ></b-form-input>
+                    <FormErrorMessage :errors="errors"/>
+                </b-form-group>
+            </ValidationProvider>
 
-            <b-form-group label="Password:">
-                <b-form-input
-                    type="password"
-                    v-model="form.password"
-                    required
-                ></b-form-input>
-            </b-form-group>
+            <ValidationProvider
+                name="Password"
+                rules="required|min:6"
+                v-slot="{ errors }"
+            >
+                <b-form-group label="Password:">
+                    <b-form-input
+                        type="password"
+                        v-model="form.password"
+                        required
+                    ></b-form-input>
+                    <FormErrorMessage :errors="errors"/>
+                </b-form-group>
+            </ValidationProvider>
 
-            <b-form-group label="Confirm Password:">
-                <b-form-input
-                    type="password"
-                    v-model="form.passwordConfirm"
-                    required
-                ></b-form-input>
-            </b-form-group>
+            <ValidationProvider
+                name="Password Confirmation"
+                rules="required|min:6"
+                v-slot="{ errors }"
+            >
+                <b-form-group label="Confirm Password:">
+                    <b-form-input
+                        type="password"
+                        v-model="form.passwordConfirm"
+                        required
+                    ></b-form-input>
+                    <FormErrorMessage :errors="errors"/>
+                </b-form-group>
+            </ValidationProvider>
 
             <b-button type="submit" variant="primary">Sign Up</b-button>
         </b-form>
@@ -48,9 +69,11 @@
 <script>
     import axios from 'axios';
     import { ValidationProvider } from 'vee-validate';
+    import FormErrorMessage from '@/components/FormErrorMessage.vue';
 	export default {
         components: {
-            ValidationProvider
+            ValidationProvider,
+            FormErrorMessage
         },
 		data() {
 			return {
