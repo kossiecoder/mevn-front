@@ -1,13 +1,20 @@
 <template>
     <div class="mt-4">
         <b-form @submit.prevent="onSubmit">
-            <b-form-group label="Name:">
-                <b-form-input
-                    v-model="form.name"
-                    type="text"
-                    required
-                ></b-form-input>
-            </b-form-group>
+            <ValidationProvider
+                name="Name"
+                rules="email"
+                v-slot="{ errors }"
+            >
+                <b-form-group label="Name:">
+                    <b-form-input
+                        v-model="form.name"
+                        type="text"
+                        required
+                    ></b-form-input>
+                </b-form-group>
+                <span>{{ errors[0] }}</span>
+            </ValidationProvider>
 
             <b-form-group label="Email address:">
                 <b-form-input
@@ -40,14 +47,18 @@
 
 <script>
     import axios from 'axios';
+    import { ValidationProvider } from 'vee-validate';
 	export default {
+        components: {
+            ValidationProvider
+        },
 		data() {
 			return {
 				form: {
 					email: '',
 					password: '',
 					passwordConfirm: '',
-          name: ''
+                    name: ''
 				}
 			}
 		},
